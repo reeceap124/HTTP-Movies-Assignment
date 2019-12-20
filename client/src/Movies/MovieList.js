@@ -2,7 +2,20 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import MovieCard from "./MovieCard";
-export const MovieList = (props) => {
+export const  MovieList = (props) => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     movies: []
+  //   };
+  // }
+
+  // componentDidMount() {
+  //   axios
+  //     .get("http://localhost:5000/api/movies")
+  //     .then(res => this.setState({ movies: res.data }))
+  //     .catch(err => console.log(err.response));
+  // }
 
 
     return (

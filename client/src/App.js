@@ -13,7 +13,10 @@ const App = () => {
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/movies")
-      .then(res => setMovies(res.data))
+      .then(res => {
+        console.log('app.js axios call',res.data)
+        setMovies(u => [...u, ...res.data])
+      })
       .catch(err => console.log(err.response));
   }, []);
   
@@ -30,7 +33,7 @@ const App = () => {
       <Route
         path="/movies/:id"
         render={props => {
-          return <Movie {...props} addToSavedList={addToSavedList} />;
+          return <Movie {...props} movies={movies} setMovies={setMovies} addToSavedList={addToSavedList} />;
         }}
       />
       <Route path='/edit_movie/:id' render={props => {

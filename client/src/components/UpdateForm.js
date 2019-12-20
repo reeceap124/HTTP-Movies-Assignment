@@ -11,12 +11,11 @@ const initVal = {
 
 export const UpdateForm = props => {
     const [movie, setMovie] = useState(initVal)
-
+    
     useEffect(()=> {
         const targetMovie = props.movies.find(
             movie => `${movie.id}` === props.match.params.id
         );
-        console.log('target movie', targetMovie)
         if (targetMovie) {
             setMovie(targetMovie)
         }
@@ -30,13 +29,22 @@ export const UpdateForm = props => {
             [e.target.name]: e.target.value
         })
     }
+    const handleNewStars = (e, i) => {
+        e.preventDefault();
+        const newStars = [...movie.stars];
+        newStars[i] = e.target.value;
+        setMovie({
+            ...movie,
+            stars: newStars
+        });
+    };
     const handleSubmit = e => {
         e.preventDefault()
         axios
             .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
             .then((res)=>{
                 console.log('put res', res)
-                props.updateMovies(res.data)
+                props.updateMovies((u) => [u, res.data])
                 props.history.push(`/movies/${movie.id}`)
             })
             .catch(err => {
@@ -49,8 +57,14 @@ export const UpdateForm = props => {
       <form onSubmit={handleSubmit}>
         <input type="text" name="title" onChange={handleChange} placeholder="Movie Title" value={movie.title} />
         <input type="text"  name="director" onChange={handleChange} placeholder="Director" value={movie.director} />
-        <input type="text" name="metascore" onChange={handleChange} placeholder="Metascore" value={movie.metascore} />
-        <input type="text" name="star" onChange={handleChange} placeholder="stars" value={movie.star} />
+        <input type="text" name="metascore" onChange={handleChange} placeholder="Metascore" value={movie.metascore} /><br/>
+        {movie.stars && movie.stars.map((star, i) => {  
+            console.log('star',star)      
+            return (
+                <input key={i} type="text" name='stars' onChange={e => handleNewStars(e, i)} placeholder="Star" value={movie.stars[i]}/>
+            )
+        })}
+        {/* <input type="text" name="stars" onChange={handleChange} placeholder="stars" value={movie.stars} /> */}
         <button onClick={handleSubmit}>
           Update
         </button>
