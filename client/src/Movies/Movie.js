@@ -31,17 +31,23 @@ export default class Movie extends React.Component {
     addToSavedList(this.state.movie);
   };
 
+  handleEditClick = e => {
+    e.preventDefault();
+    this.props.history.push(`/edit_movie/${this.props.match.params.id}`)
+  }
+
   render() {
     if (!this.state.movie) {
       return <div>Loading movie information...</div>;
     }
-
     return (
+      
       <div className="save-wrapper">
         <MovieCard movie={this.state.movie} />
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
+        <button onClick={this.handleEditClick}>Edit</button>
       </div>
     );
   }
